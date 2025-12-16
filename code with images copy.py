@@ -24,7 +24,6 @@ def load_image(filename):
 
 bg_img = load_image("view.png")
 bee_img = load_image("bee.png")
-frog_img = load_image("frog.png")  # Single frog image
 
 # ---------------- GAME VARIABLES ----------------
 bees = []
@@ -34,10 +33,6 @@ for _ in range(6):
         "y": random.randint(0, SCREEN_HEIGHT),
         "speed": random.randint(2, 4)
     })
-
-frog_x, frog_y = SCREEN_WIDTH // 2, SCREEN_HEIGHT // 2
-frog_speed = 5
-FRAME_W, FRAME_H = frog_img.get_width(), frog_img.get_height() if frog_img else (64, 64)
 
 # ---------------- GIT PUSH FUNCTION ----------------
 def git_push(commit_message="Auto-update from Python"):
@@ -60,14 +55,6 @@ while running:
         elif event.type == pygame.KEYDOWN and event.key == pygame.K_ESCAPE:
             running = False
 
-    keys = pygame.key.get_pressed()
-
-    # FROG MOVEMENT
-    if keys[pygame.K_LEFT]:
-        frog_x -= frog_speed
-    elif keys[pygame.K_RIGHT]:
-        frog_x += frog_speed
-
     # DRAW
     if bg_img:
         screen.blit(bg_img, (0, 0))
@@ -84,15 +71,6 @@ while running:
             screen.blit(bee_img, (bee["x"], bee["y"]))
         else:
             pygame.draw.rect(screen, (255, 255, 0), (bee["x"], bee["y"], 40, 40))
-
-    if frog_img:
-        screen.blit(frog_img, (frog_x, frog_y))
-    else:
-        pygame.draw.rect(screen, (0, 255, 0), (frog_x, frog_y, FRAME_W, FRAME_H))
-
-    # Keep frog on screen
-    frog_x = max(0, min(frog_x, SCREEN_WIDTH - FRAME_W))
-    frog_y = max(0, min(frog_y, SCREEN_HEIGHT - FRAME_H))
 
     pygame.display.flip()
 
